@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TourGuide</string>
+
+    <string name="category_Attractions">Attraction</string>
+    <string name="category_Parks">Parks</string>
+    <string name="category_Clubs">Clubs</string>
+    <string name="category_Pubs">Pubs</string>
+</resources>

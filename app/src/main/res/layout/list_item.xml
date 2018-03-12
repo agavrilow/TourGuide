@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_poi_image"
+        android:layout_width="170dp"
+        android:layout_height="120dp"
+        tools:src="@drawable/drawerpic"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:id="@+id/text_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:id="@+id/tv_poi_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorTextLight"
+            android:textStyle="bold"
+            tools:text="Main Cathedral" />
+
+        <TextView
+            android:id="@+id/tv_poi_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorTextDark"
+            tools:text="Main Yuzhno-Sakhalinsk cathedral, located at Pobeda square" />
+    </LinearLayout>
+</LinearLayout>
