@@ -3,6 +3,7 @@ package com.example.android.tourguide;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -34,27 +37,59 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        setupDrawerContent(navigationView);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+    }
 
-
-        /***  Looks like something wrong with below Fragment Transaction, because, most probably
-         * I have to use internal Category Adapter with ViewPager, which is controlling fragments by TabLayout*/
+    private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        int id = menuItem.getItemId();
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
-
-                        if (id == R.id.nav_attraction) {
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            fragmentManager.beginTransaction().replace(R.id.content_frame, new AttractionsFragment()).commit();
-                        }
+                        selectDrawerItem(menuItem);
                         return true;
                     }
                 });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.nav_attraction:
+                fragmentClass = AttractionsFragment.class;
+                break;
+            case R.id.nav_parks:
+                fragmentClass = ParksFragment.class;
+                break;
+            case R.id.nav_clubs:
+                fragmentClass = ClubsFragment.class;
+                break;
+            case R.id.nav_pubs:
+                fragmentClass = BarsFragment.class;
+                break;
+            default:
+                fragmentClass = AttractionsFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        drawerLayout.closeDrawers();
     }
 
     @Override
